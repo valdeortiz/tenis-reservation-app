@@ -3,6 +3,7 @@ import 'dart:ui';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tenis/src/presentation/pages/canchaDetalle/cancha_detalle.dart';
 import 'package:tenis/src/presentation/pages/home.dart';
+import 'package:tenis/src/presentation/pages/nueva_reservacion/nueva_reservacion.dart';
 import 'package:tenis/src/utils/app_config.dart';
 import 'package:tenis/src/utils/dialog_helper.dart';
 
@@ -34,6 +35,7 @@ class App extends StatelessWidget {
         routes: {
           '/': (context) => const Home(),
           CanchaDetalle.path: (context) => const CanchaDetalle(),
+          NuevaReservacion.path: (context) => NuevaReservacion(),
         },
       ),
     );

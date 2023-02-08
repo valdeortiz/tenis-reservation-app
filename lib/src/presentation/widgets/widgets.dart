@@ -108,3 +108,7 @@ extension WidgetPaddingX on Widget {
 
   Widget get paddingZero => Padding(padding: EdgeInsets.zero, child: this);
 }
+
+extension Formateo on DateTime {
+  String stringFormat() => '$day/$month/$year - $hour:$minute';
+}
