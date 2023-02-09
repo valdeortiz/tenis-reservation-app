@@ -10,7 +10,7 @@ import 'package:hive/hive.dart';
 void main() async {
   AppConfig.init(
     isDebug: true,
-    urlApp: 'https//dumy.com:',
+    urlApp: 'https://api.weatherapi.com/v1/current.json',
     version: '1.1',
   );
 

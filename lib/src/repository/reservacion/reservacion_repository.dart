@@ -12,6 +12,8 @@ abstract class ReservacionRepository extends Repository {
   Future<ApiResponse<List<Reservacion>>> getList([int skip, int limit]);
   List<Reservacion> getReservas();
   List<Reservacion> getReservasFechas(DateTime date);
+  // Future<ApiResponse<double>> getProbabilidadLluvia(double lat, double long);
+  Future<dynamic> getProbabilidadLluvia(double lat, double long);
 
   void saveReserva(Reservacion reservacion);
   void deleteReserva(Reservacion reservacion);
@@ -62,5 +64,20 @@ class ReservacionRepositoryImpl extends ReservacionRepository {
             element.fecha.month == date.month &&
             element.fecha.year == date.year)
         .toList();
+  }
+
+  @override
+  Future<dynamic> getProbabilidadLluvia(double lat, double long) async {
+    // final response = await dio.get('/api', queryParameters: {
+    //   'key': '637f32b27d2f4f599aa211223230902',
+    //   'lat': lat,
+    //   'long;': long,
+    // });
+    // final result = ApiResponse.from(response);
+
+    // // return result['current']['precip_mm'];
+    // print(result);
+    // // return result;
+    // return 2.0;
   }
 }

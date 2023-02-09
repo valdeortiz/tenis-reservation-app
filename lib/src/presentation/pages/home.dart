@@ -4,6 +4,7 @@ import 'package:tenis/src/models/reservacion.dart';
 import 'package:tenis/src/presentation/pages/nueva_reservacion/nueva_reservacion.dart';
 import 'package:tenis/src/presentation/widgets/widgets.dart';
 import 'package:tenis/src/provider/reservacion_prov.dart';
+import 'package:tenis/src/utils/dialog_helper.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -33,9 +34,10 @@ class Home extends StatelessWidget {
           Center(
             child: Text(
               "Reservas",
-              style: context.h5,
+              style: context.h3,
             ),
           ),
+          gap18,
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
@@ -119,21 +121,41 @@ class CanchaCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // const SizedBox(width: 32),
-                    // Column(
-                    //   crossAxisAlignment: CrossAxisAlignment.end,
-                    //   children: const [
-                    //     Text(
-                    //       'Reservaciones disponibles',
-                    //       style: TextStyle(
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //     SizedBox(height: 4),
-                    //     Text('Tenis Inc'),
-                    //   ],
-                    // )
+                    // gap16,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Eliminar reservacion',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          alignment: Alignment.center,
+                          onPressed: () async {
+                            final data = await DialogHelper.ifDialog(
+                              context: context,
+                              // accept: () => ,
+                              title: "Eliminar reserva",
+                              message:
+                                  "Esta seguro que desea eliminar la reserva ?",
+                            );
+                            if (data) {
+                              Provider.of<ReservacionProvider>(context,
+                                      listen: false)
+                                  .eliminarReserva(reserva);
+                            }
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red[300],
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ],

@@ -68,7 +68,11 @@ class ReservacionProvider extends ChangeNotifier {
     final data = domain.getReservas();
     reservas = data;
     notifyListeners();
-    // return data;
+  }
+
+  void eliminarReserva(Reservacion reservacion) {
+    domain.deleteReserva(reservacion);
+    getReservaciones();
   }
 
   reservar() {
