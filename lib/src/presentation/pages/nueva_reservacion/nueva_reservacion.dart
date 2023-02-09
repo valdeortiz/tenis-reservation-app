@@ -1,17 +1,17 @@
+import 'package:provider/provider.dart';
 import 'package:tenis/src/presentation/widgets/cancha_selected_widget.dart';
 import 'package:tenis/src/presentation/widgets/custom_text_field.dart';
 import 'package:tenis/src/presentation/widgets/widgets.dart';
+import 'package:tenis/src/provider/reservacion_prov.dart';
 import 'package:tenis/src/utils/dialog_helper.dart';
 
 class NuevaReservacion extends StatelessWidget {
-  NuevaReservacion({super.key});
+  const NuevaReservacion({super.key});
   static String path = 'nueva';
-  TextEditingController controller = TextEditingController();
-  TextEditingController dateInputController = TextEditingController();
-  TextEditingController canchaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final prov = Provider.of<ReservacionProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nueva reserva'),
@@ -28,26 +28,24 @@ class NuevaReservacion extends StatelessWidget {
           children: [
             const Text(
               "Seleccione la cancha",
-              style:
-                  TextStyle(color: Palette.gray2, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                  color: Palette.gray2,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            CanchaListWidget(controller: canchaController),
-            const SizedBox(
-              height: 20,
-            ),
+            gap10,
+            const CanchaListWidget(),
+            gap18,
             const Text(
               "Selecciona la fecha",
-              style:
-                  TextStyle(color: Palette.gray2, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                  color: Palette.gray2,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            gap10,
             CustomTextField(
-              controller: dateInputController,
+              controller: prov.dateInputController,
               readOnly: true,
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
@@ -57,52 +55,33 @@ class NuevaReservacion extends StatelessWidget {
                     lastDate: DateTime(2050));
 
                 if (pickedDate != null) {
-                  dateInputController.text = pickedDate.toString();
+                  if (prov.nroReservas(pickedDate) > 0) {
+                    DialogHelper.showError(
+                        "Numero maximo de reservas, seleccione otra fecha");
+                    return;
+                  }
+                  prov.setFecha(pickedDate);
                 }
               },
               hint: "fecha",
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            if (prov.probabilidadLluvia != 0.0)
+              Text(prov.probabilidadLluviaStr),
+            gap18,
             const Text(
               "Ingresa el nombre",
-              style:
-                  TextStyle(color: Palette.gray2, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                  color: Palette.gray2,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            gap10,
             CustomTextField(
-              controller: controller,
+              controller: prov.nombreController,
               hint: "Nombre",
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            CustomButton(
-                onTap: () {
-                  if (controller.text.isNotEmpty &&
-                      dateInputController.text.isNotEmpty &&
-                      canchaController.text.isNotEmpty) {
-                    DialogHelper.showSuccess(
-                        "${controller.text} - ${dateInputController.text} - ${canchaController.text}");
-                    return;
-                  }
-                  String error = '';
-                  if (controller.text.isEmpty) {
-                    error += 'Nombre vacio';
-                  }
-                  if (dateInputController.text.isEmpty) {
-                    error += ' fecha vacio';
-                  }
-                  if (canchaController.text.isEmpty) {
-                    error += ' cancha no seleccionado';
-                  }
-                  DialogHelper.showError(error);
-                  // show dialog
-                },
-                label: "Reservar")
+            gap18,
+            CustomButton(onTap: prov.reservar, label: "Reservar")
           ],
         ),
       ),

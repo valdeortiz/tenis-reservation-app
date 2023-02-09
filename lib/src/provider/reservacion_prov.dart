@@ -1,0 +1,89 @@
+import 'package:tenis/src/domain/domains.dart';
+import 'package:tenis/src/presentation/pages/home/constantes.dart';
+import 'package:tenis/src/presentation/widgets/widgets.dart';
+import 'package:tenis/src/utils/dialog_helper.dart';
+
+enum CanchasDisponibles { A, B, C }
+
+final tipoCanchas = {
+  'A': Canchas.canchaCesped,
+  'B': Canchas.canchaPiso,
+  'C': Canchas.canchaTierra,
+};
+
+class ReservacionProvider extends ChangeNotifier {
+  final domain = getIt.get<ReservacionDomain>();
+  final TextEditingController _nombreController = TextEditingController();
+  final TextEditingController _dateInputController = TextEditingController();
+  final TextEditingController _canchaController = TextEditingController();
+  get nombreController => _nombreController;
+  get dateInputController => _dateInputController;
+  get canchaController => _canchaController;
+  DateTime? fecha;
+  double probabilidadLluvia = 0.0;
+  String get probabilidadLluviaStr {
+    return 'Probabilidad de lluvia: $probabilidadLluvia %';
+  }
+
+  String get datos {
+    return "${_nombreController.text} - ${_dateInputController.text} - ${_canchaController.text}";
+  }
+
+  String get cancha => _canchaController.text;
+
+  void setCancha(String data) {
+    _canchaController.text = data;
+    notifyListeners();
+  }
+
+  void setFecha(DateTime fecha) {
+    _dateInputController.text = fecha.stringFormat();
+    this.fecha = fecha;
+    // Buscar la probabilidad de lluvia
+    probabilidadLluvia = 20.0;
+    notifyListeners();
+  }
+
+  void close() {
+    probabilidadLluvia = 0.0;
+    _nombreController.clear();
+    _dateInputController.clear();
+    _canchaController.clear();
+    notifyListeners();
+  }
+
+  int nroReservas(fecha) {
+    return domain.getReservasFechas(fecha!).length;
+  }
+
+  reservar() {
+    if (_nombreController.text.isNotEmpty &&
+        _dateInputController.text.isNotEmpty &&
+        _canchaController.text.isNotEmpty) {
+      DialogHelper.showSuccess(datos);
+      Cancha cancha = tipoCanchas[canchaController.text]!;
+      Reservacion reserva = Reservacion(
+        id: 0,
+        fecha: fecha!,
+        nombreUsuario: _nombreController.text,
+        porcentajeLluvia: probabilidadLluvia,
+        cancha: cancha,
+      );
+      domain.saveReserva(reserva);
+
+      close();
+      return '';
+    }
+    String error = '';
+    if (_nombreController.text.isEmpty) {
+      error += 'Nombre vacio';
+    }
+    if (_dateInputController.text.isEmpty) {
+      error += ' fecha vacio';
+    }
+    if (_canchaController.text.isEmpty) {
+      error += ' cancha no seleccionado';
+    }
+    DialogHelper.showError(error);
+  }
+}

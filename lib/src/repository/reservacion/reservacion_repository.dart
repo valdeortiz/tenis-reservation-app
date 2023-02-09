@@ -11,6 +11,7 @@ abstract class ReservacionRepository extends Repository {
 
   Future<ApiResponse<List<Reservacion>>> getList([int skip, int limit]);
   List<Reservacion> getReservas();
+  List<Reservacion> getReservasFechas(DateTime date);
 
   void saveReserva(Reservacion reservacion);
   void deleteReserva(Reservacion reservacion);
@@ -51,5 +52,15 @@ class ReservacionRepositoryImpl extends ReservacionRepository {
   void deleteReserva(Reservacion reservacion) {
     final hive = HiveRepository(hiveInterface);
     hive.delete('reservas', reservacion.id.toString());
+  }
+
+  @override
+  List<Reservacion> getReservasFechas(DateTime date) {
+    return getReservas()
+        .where((element) =>
+            element.fecha.day == date.day &&
+            element.fecha.month == date.month &&
+            element.fecha.year == date.year)
+        .toList();
   }
 }

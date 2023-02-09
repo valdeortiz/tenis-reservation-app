@@ -110,5 +110,5 @@ extension WidgetPaddingX on Widget {
 }
 
 extension Formateo on DateTime {
-  String stringFormat() => '$day/$month/$year - $hour:$minute';
+  String stringFormat() => '$day-$month-$year  $hour:$minute';
 }

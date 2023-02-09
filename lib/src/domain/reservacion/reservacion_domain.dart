@@ -1,5 +1,3 @@
-import 'package:tenis/src/models/reservacion.dart';
-
 import '../domain.dart';
 
 abstract class ReservacionDomain extends Domain {
@@ -7,6 +5,7 @@ abstract class ReservacionDomain extends Domain {
   ReservacionDomain(this.repository);
   Future<List<Reservacion>> getList([int skip, int limit]);
   Future<List<Reservacion>> getReservas();
+  List<Reservacion> getReservasFechas(DateTime date);
 
   void saveReserva(Reservacion reservacion);
   void deleteReserva(Reservacion reservacion);
@@ -30,6 +29,11 @@ class ReservacionDomainImpl extends ReservacionDomain {
   @override
   Future<List<Reservacion>> getReservas() async {
     return repository.getReservas();
+  }
+
+  @override
+  List<Reservacion> getReservasFechas(DateTime date) {
+    return repository.getReservasFechas(date);
   }
 
   @override
