@@ -85,7 +85,7 @@ class CanchaCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(reserva.fecha.stringFormat()),
-                        Text(reserva.usuario),
+                        Text(reserva.nombreUsuario),
                         Text('${reserva.porcentajeLluvia}% de lluvia'),
                       ],
                     ),

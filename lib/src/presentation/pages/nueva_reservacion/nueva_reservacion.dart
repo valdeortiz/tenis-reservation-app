@@ -1,12 +1,14 @@
-import 'package:tenis/src/presentation/pages/home/constantes.dart';
+import 'package:tenis/src/presentation/widgets/cancha_selected_widget.dart';
 import 'package:tenis/src/presentation/widgets/custom_text_field.dart';
 import 'package:tenis/src/presentation/widgets/widgets.dart';
+import 'package:tenis/src/utils/dialog_helper.dart';
 
 class NuevaReservacion extends StatelessWidget {
   NuevaReservacion({super.key});
   static String path = 'nueva';
   TextEditingController controller = TextEditingController();
   TextEditingController dateInputController = TextEditingController();
+  TextEditingController canchaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +26,15 @@ class NuevaReservacion extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            const CanchaListWidget(),
-            const SizedBox(
-              height: 20,
-            ),
             const Text(
-              "Ingresa el nombre",
+              "Seleccione la cancha",
               style:
                   TextStyle(color: Palette.gray2, fontWeight: FontWeight.w800),
             ),
             const SizedBox(
               height: 10,
             ),
-            CustomTextField(
-              controller: controller,
-              hint: "Nombre",
-            ),
+            CanchaListWidget(controller: canchaController),
             const SizedBox(
               height: 20,
             ),
@@ -70,63 +65,44 @@ class NuevaReservacion extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            const Text(
+              "Ingresa el nombre",
+              style:
+                  TextStyle(color: Palette.gray2, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+              controller: controller,
+              hint: "Nombre",
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             CustomButton(
                 onTap: () {
+                  if (controller.text.isNotEmpty &&
+                      dateInputController.text.isNotEmpty &&
+                      canchaController.text.isNotEmpty) {
+                    DialogHelper.showSuccess(
+                        "${controller.text} - ${dateInputController.text} - ${canchaController.text}");
+                    return;
+                  }
                   String error = '';
                   if (controller.text.isEmpty) {
                     error += 'Nombre vacio';
-                    print("Error de nombre vacio");
                   }
                   if (dateInputController.text.isEmpty) {
-                    error += 'fecha vacio';
-                    print("Error de fech vacio");
+                    error += ' fecha vacio';
                   }
+                  if (canchaController.text.isEmpty) {
+                    error += ' cancha no seleccionado';
+                  }
+                  DialogHelper.showError(error);
                   // show dialog
                 },
                 label: "Reservar")
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CanchaListWidget extends StatelessWidget {
-  const CanchaListWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 150,
-      child: ListView.separated(
-        separatorBuilder: (context, index) => const SizedBox(
-          width: 12,
-        ),
-        scrollDirection: Axis.horizontal,
-        itemCount: CANCHAS.length,
-        itemBuilder: (context, index) => Stack(
-          children: [
-            Container(
-              height: 150,
-              width: 150,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(CANCHAS[index].imagen),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-              ),
-            ),
-            Align(
-                alignment: Alignment.bottomRight,
-                child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.check_box,
-                      color: Colors.white,
-                    )))
           ],
         ),
       ),

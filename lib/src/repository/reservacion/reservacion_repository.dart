@@ -1,0 +1,55 @@
+import 'package:hive/hive.dart';
+import 'package:tenis/src/infraestructure/hive_repository.dart';
+import 'package:tenis/src/models/reservacion.dart';
+
+import '../../infraestructure/api_response.dart';
+
+import '../repository.dart';
+
+abstract class ReservacionRepository extends Repository {
+  ReservacionRepository(HiveInterface hiveInterface) : super(hiveInterface);
+
+  Future<ApiResponse<List<Reservacion>>> getList([int skip, int limit]);
+  List<Reservacion> getReservas();
+
+  void saveReserva(Reservacion reservacion);
+  void deleteReserva(Reservacion reservacion);
+}
+
+class ReservacionRepositoryImpl extends ReservacionRepository {
+  ReservacionRepositoryImpl(HiveInterface hiveInterface)
+      : super(hiveInterface) {
+    ApiResponse.register<Reservacion>(Reservacion.fromJson);
+  }
+
+  @override
+  Future<ApiResponse<List<Reservacion>>> getList(
+      [int skip = 0, int limit = 10]) async {
+    final response = await dio.get('/reservaciones', queryParameters: {
+      if (skip > 0) 'skip': skip,
+      'limit': limit,
+    });
+    final result =
+        ApiResponse.fromList<Reservacion>(response, (a) => a['reservaciones']);
+    return result;
+  }
+
+  @override
+  List<Reservacion> getReservas() {
+    final hive = HiveRepository(hiveInterface);
+    final reservas = hive.getList('reservas');
+    return List<Reservacion>.from(reservas);
+  }
+
+  @override
+  void saveReserva(Reservacion reservacion) {
+    final hive = HiveRepository(hiveInterface);
+    hive.put('reservas', reservacion.id.toString(), reservacion);
+  }
+
+  @override
+  void deleteReserva(Reservacion reservacion) {
+    final hive = HiveRepository(hiveInterface);
+    hive.delete('reservas', reservacion.id.toString());
+  }
+}
