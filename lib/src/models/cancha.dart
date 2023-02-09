@@ -18,6 +18,11 @@ class Cancha extends ObjectDatabase {
     required this.imagen,
     required this.nombre,
   });
+
+  @override
+  String toString() {
+    return '$titulo - $nombre';
+  }
 }
 
 abstract class ObjectDatabase {}

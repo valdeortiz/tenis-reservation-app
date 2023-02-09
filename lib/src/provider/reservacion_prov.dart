@@ -12,6 +12,11 @@ final tipoCanchas = {
 };
 
 class ReservacionProvider extends ChangeNotifier {
+  ReservacionProvider() {
+    // getReservaciones();
+    final data = domain.getReservas();
+    reservas = data;
+  }
   final domain = getIt.get<ReservacionDomain>();
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _dateInputController = TextEditingController();
@@ -19,6 +24,8 @@ class ReservacionProvider extends ChangeNotifier {
   get nombreController => _nombreController;
   get dateInputController => _dateInputController;
   get canchaController => _canchaController;
+  Cancha? _canchaSeleccionado;
+  List<Reservacion> reservas = [];
   DateTime? fecha;
   double probabilidadLluvia = 0.0;
   String get probabilidadLluviaStr {
@@ -31,8 +38,9 @@ class ReservacionProvider extends ChangeNotifier {
 
   String get cancha => _canchaController.text;
 
-  void setCancha(String data) {
-    _canchaController.text = data;
+  void setCancha(Cancha data) {
+    _canchaController.text = data.nombre;
+    _canchaSeleccionado = data;
     notifyListeners();
   }
 
@@ -56,14 +64,22 @@ class ReservacionProvider extends ChangeNotifier {
     return domain.getReservasFechas(fecha!).length;
   }
 
+  void getReservaciones() {
+    final data = domain.getReservas();
+    reservas = data;
+    notifyListeners();
+    // return data;
+  }
+
   reservar() {
     if (_nombreController.text.isNotEmpty &&
         _dateInputController.text.isNotEmpty &&
         _canchaController.text.isNotEmpty) {
       DialogHelper.showSuccess(datos);
-      Cancha cancha = tipoCanchas[canchaController.text]!;
+      Cancha cancha = _canchaSeleccionado!;
+
       Reservacion reserva = Reservacion(
-        id: 0,
+        id: fecha!.microsecondsSinceEpoch,
         fecha: fecha!,
         nombreUsuario: _nombreController.text,
         porcentajeLluvia: probabilidadLluvia,
@@ -72,6 +88,7 @@ class ReservacionProvider extends ChangeNotifier {
       domain.saveReserva(reserva);
 
       close();
+      getReservaciones();
       return '';
     }
     String error = '';

@@ -1,14 +1,17 @@
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:tenis/src/models/reservacion.dart';
-import 'package:tenis/src/presentation/pages/home/constantes.dart';
 import 'package:tenis/src/presentation/pages/nueva_reservacion/nueva_reservacion.dart';
 import 'package:tenis/src/presentation/widgets/widgets.dart';
+import 'package:tenis/src/provider/reservacion_prov.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // final prov = Provider.of<ReservacionProvider>(context, listen: false)
+    //   ..getReservaciones();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -36,9 +39,17 @@ class Home extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
-                return CanchaCard(reserva: RESERVACIONES[index]);
+                if (Provider.of<ReservacionProvider>(context)
+                    .reservas
+                    .isEmpty) {
+                  return loadingIndicator;
+                }
+                return CanchaCard(
+                    reserva: Provider.of<ReservacionProvider>(context)
+                        .reservas[index]);
               },
-              itemCount: RESERVACIONES.length,
+              itemCount:
+                  Provider.of<ReservacionProvider>(context).reservas.length,
             ),
           ),
         ],

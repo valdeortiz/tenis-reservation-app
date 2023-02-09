@@ -4,7 +4,7 @@ abstract class ReservacionDomain extends Domain {
   final ReservacionRepository repository;
   ReservacionDomain(this.repository);
   Future<List<Reservacion>> getList([int skip, int limit]);
-  Future<List<Reservacion>> getReservas();
+  List<Reservacion> getReservas();
   List<Reservacion> getReservasFechas(DateTime date);
 
   void saveReserva(Reservacion reservacion);
@@ -27,7 +27,7 @@ class ReservacionDomainImpl extends ReservacionDomain {
   }
 
   @override
-  Future<List<Reservacion>> getReservas() async {
+  List<Reservacion> getReservas() {
     return repository.getReservas();
   }
 

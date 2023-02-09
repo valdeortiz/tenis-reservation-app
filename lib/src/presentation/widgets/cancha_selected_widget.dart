@@ -19,7 +19,7 @@ class CanchaListWidget extends StatelessWidget {
         itemCount: CANCHAS.length,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            prov.setCancha(CANCHAS[index].nombre);
+            prov.setCancha(CANCHAS[index]);
           },
           child: Stack(
             children: [
