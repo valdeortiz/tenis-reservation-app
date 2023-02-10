@@ -8,7 +8,7 @@ class HiveRepository<T> {
   T? get(String boxName, String key) {
     final box = interface.box<T>(boxName);
     final result = box.get(key);
-    print('se obtuvo de $key la data $result');
+    // print('se obtuvo de $key la data $result');
     return result;
   }
 
@@ -24,7 +24,7 @@ class HiveRepository<T> {
 
   Future<void> put(String boxName, String key, T data) async {
     if (data == null) return;
-    print('se inserto en $key la data $data ');
+    // print('se inserto en $key la data $data ');
     final box = interface.box<T>(boxName);
     return await box.put(key, data);
   }

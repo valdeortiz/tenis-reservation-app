@@ -16,7 +16,7 @@ class RootWidget extends StatelessWidget {
       builder: (context) {
         return GestureDetector(
           onTap: () =>
-              WidgetsBinding.instance?.focusManager.primaryFocus?.unfocus(),
+              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
             child: child,

@@ -28,6 +28,7 @@ class ReservacionProvider extends ChangeNotifier {
   List<Reservacion> reservas = [];
   DateTime? fecha;
   double probabilidadLluvia = 0.0;
+  static int nroReservasMaximas = 3;
   String get probabilidadLluviaStr {
     return 'Probabilidad de lluvia: $probabilidadLluvia %';
   }
@@ -79,7 +80,6 @@ class ReservacionProvider extends ChangeNotifier {
     if (_nombreController.text.isNotEmpty &&
         _dateInputController.text.isNotEmpty &&
         _canchaController.text.isNotEmpty) {
-      DialogHelper.showSuccess("Reserva realizada correctamente");
       Cancha cancha = _canchaSeleccionado!;
 
       Reservacion reserva = Reservacion(
@@ -93,6 +93,9 @@ class ReservacionProvider extends ChangeNotifier {
 
       close();
       getReservaciones();
+      DialogHelper.showSuccess("Reserva realizada correctamente");
+      // se realiza un return para no continuar con la funcion
+      return;
     }
     String error = '';
     if (_nombreController.text.isEmpty) {

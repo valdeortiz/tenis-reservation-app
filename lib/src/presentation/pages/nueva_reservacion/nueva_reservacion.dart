@@ -55,7 +55,8 @@ class NuevaReservacion extends StatelessWidget {
                     lastDate: DateTime(2050));
 
                 if (pickedDate != null) {
-                  if (prov.nroReservas(pickedDate) > 0) {
+                  if (prov.nroReservas(pickedDate) >
+                      ReservacionProvider.nroReservasMaximas) {
                     DialogHelper.showError(
                         "Numero maximo de reservas, seleccione otra fecha");
                     return;

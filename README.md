@@ -11,16 +11,31 @@ _Estas instrucciones te permitirán obtener una copia del proyecto en funcionami
 
 _Utilizamos flutter version 3.3.4, dart version 2.18.2_
 
+Descargamos las dependencias
+
+```
+flutter pub get
+```
+
+```
+flutter packages pub run build_runner build
+```
+
+## Importante
+
+***SE DEBE CREAR EL ARCHIVO .env CON LOS PARAMETROS GLOBALES***
+
+se utiliza una key de [weatherapi](https://www.weatherapi.com/docs/) para la consulta de probabilidad de lluvia en un dia especifico
+
+```
+W_API=example_key
+```
 
 ### Instalación 🔧
 
 _Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
 
 _Descarga de paquetes necesarios para la ejecucion_
-
-```
-flutter pub get
-```
 
 _Iniciar proyecto_
 
@@ -61,8 +76,7 @@ Para todas las versiones disponibles, mira los [tags en este repositorio](https:
 
 ## Expresiones de Gratitud 🎁
 
-* Comenta a otros sobre este proyecto 📢
-* Invita una cerveza 🍺 a alguien del equipo. 
+* Comenta a otros sobre este proyecto
 * Da las gracias públicamente 🤓.
 * etc.
 
