@@ -21,6 +21,4 @@ class Canchas {
   );
 }
 
-enum CanchasE { A, B, C }
-
 List CANCHAS = [Canchas.canchaCesped, Canchas.canchaPiso, Canchas.canchaTierra];
