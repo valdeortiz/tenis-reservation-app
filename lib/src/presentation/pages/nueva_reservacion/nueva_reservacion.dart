@@ -65,8 +65,9 @@ class NuevaReservacion extends StatelessWidget {
               },
               hint: "fecha",
             ),
-            if (prov.probabilidadLluvia != -1.0)
-              Text(prov.probabilidadLluviaStr),
+            Text(prov.probabilidadLluvia != -1.0
+                ? prov.probabilidadLluviaStr
+                : "No se pudo obtener datos del clima en ese dia"),
             gap18,
             const Text(
               "Ingresa el nombre",

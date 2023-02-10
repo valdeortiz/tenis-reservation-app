@@ -48,7 +48,6 @@ class ReservacionProvider extends ChangeNotifier {
     _dateInputController.text = fecha.stringFormat();
     this.fecha = fecha;
     final double data = await domain.getProbabilidadLluvia(fecha);
-    print("Data: $data");
     probabilidadLluvia = data;
     notifyListeners();
   }
@@ -80,7 +79,7 @@ class ReservacionProvider extends ChangeNotifier {
     if (_nombreController.text.isNotEmpty &&
         _dateInputController.text.isNotEmpty &&
         _canchaController.text.isNotEmpty) {
-      DialogHelper.showSuccess(datos);
+      DialogHelper.showSuccess("Reserva realizada correctamente");
       Cancha cancha = _canchaSeleccionado!;
 
       Reservacion reserva = Reservacion(
@@ -94,7 +93,6 @@ class ReservacionProvider extends ChangeNotifier {
 
       close();
       getReservaciones();
-      return '';
     }
     String error = '';
     if (_nombreController.text.isEmpty) {

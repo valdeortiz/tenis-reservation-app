@@ -90,12 +90,10 @@ class ReservacionRepositoryImpl extends ReservacionRepository {
     // print(response.data);
     final result = ApiResponse.from(response);
     final forecast = result.jsonBody['forecast']['forecastday'] as List;
-    print(forecast.last['day']);
 
     try {
       return forecast.last['day']['totalprecip_mm'];
     } catch (e) {
-      print(e);
       return -1.0;
     }
   }
