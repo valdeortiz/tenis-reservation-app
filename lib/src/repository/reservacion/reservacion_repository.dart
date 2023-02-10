@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:tenis/src/infraestructure/hive_repository.dart';
 import 'package:tenis/src/models/reservacion.dart';
@@ -13,7 +14,8 @@ abstract class ReservacionRepository extends Repository {
   List<Reservacion> getReservas();
   List<Reservacion> getReservasFechas(DateTime date);
   // Future<ApiResponse<double>> getProbabilidadLluvia(double lat, double long);
-  Future<dynamic> getProbabilidadLluvia(double lat, double long);
+  // Future<dynamic> getProbabilidadLluvia(double lat, double long);
+  Future<dynamic> getProbabilidadLluvia(DateTime date);
 
   void saveReserva(Reservacion reservacion);
   void deleteReserva(Reservacion reservacion);
@@ -67,17 +69,34 @@ class ReservacionRepositoryImpl extends ReservacionRepository {
   }
 
   @override
-  Future<dynamic> getProbabilidadLluvia(double lat, double long) async {
-    // final response = await dio.get('/api', queryParameters: {
-    //   'key': '637f32b27d2f4f599aa211223230902',
-    //   'lat': lat,
-    //   'long;': long,
-    // });
-    // final result = ApiResponse.from(response);
+  // Future<dynamic> getProbabilidadLluvia(double lat, double long) async {
+  Future<dynamic> getProbabilidadLluvia(DateTime date) async {
+    // future.json
+    // const lat = '-25.34';
+    // const long = '-57.62';
 
-    // // return result['current']['precip_mm'];
-    // print(result);
-    // // return result;
-    // return 2.0;
+    final response = await dio.get('forecast.json', queryParameters: {
+      // final response = await dio.get('', queryParameters: {
+      'key': dotenv.env['W_API'],
+      'q': 'Paraguay',
+      // 'dt': date.extractDate(),
+      'aqi': 'no',
+      'alerts': 'no',
+      // se le suma dos porque el defference quita 1 dia y el api tambien quita 1 dia
+      'days': date.difference(DateTime.now()).inDays + 2
+      // 'days': 5
+      // 'units': "metric",
+    });
+    // print(response.data);
+    final result = ApiResponse.from(response);
+    final forecast = result.jsonBody['forecast']['forecastday'] as List;
+    print(forecast.last['day']);
+
+    try {
+      return forecast.last['day']['totalprecip_mm'];
+    } catch (e) {
+      print(e);
+      return -1.0;
+    }
   }
 }

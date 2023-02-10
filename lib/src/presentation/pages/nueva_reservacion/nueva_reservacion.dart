@@ -51,7 +51,7 @@ class NuevaReservacion extends StatelessWidget {
                 DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2020),
+                    firstDate: DateTime.now(),
                     lastDate: DateTime(2050));
 
                 if (pickedDate != null) {
@@ -65,7 +65,7 @@ class NuevaReservacion extends StatelessWidget {
               },
               hint: "fecha",
             ),
-            if (prov.probabilidadLluvia != 0.0)
+            if (prov.probabilidadLluvia != -1.0)
               Text(prov.probabilidadLluviaStr),
             gap18,
             const Text(

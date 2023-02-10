@@ -44,11 +44,12 @@ class ReservacionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setFecha(DateTime fecha) {
+  void setFecha(DateTime fecha) async {
     _dateInputController.text = fecha.stringFormat();
     this.fecha = fecha;
-    // Buscar la probabilidad de lluvia
-    probabilidadLluvia = 20.0;
+    final double data = await domain.getProbabilidadLluvia(fecha);
+    print("Data: $data");
+    probabilidadLluvia = data;
     notifyListeners();
   }
 

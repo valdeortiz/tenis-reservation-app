@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 import 'package:flutter/foundation.dart';
@@ -108,12 +110,12 @@ class ApiResponse<T> {
 
   bool get cancelled => response.statusCode == 0;
 
-  // dynamic get jsonBody {
-  //   if (response?.data is String) {
-  //     return jsonDecode(response?.data as String);
-  //   }
-  //   return response?.data;
-  // }
+  dynamic get jsonBody {
+    if (response.data is String) {
+      return jsonDecode(response.data as String);
+    }
+    return response.data;
+  }
 
   // ApiResponse(this.response, this.data);
   ApiResponse(this.response, [this.data]);

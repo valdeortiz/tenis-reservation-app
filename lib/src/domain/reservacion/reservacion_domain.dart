@@ -6,6 +6,7 @@ abstract class ReservacionDomain extends Domain {
   Future<List<Reservacion>> getList([int skip, int limit]);
   List<Reservacion> getReservas();
   List<Reservacion> getReservasFechas(DateTime date);
+  Future<dynamic> getProbabilidadLluvia(DateTime date);
 
   void saveReserva(Reservacion reservacion);
   void deleteReserva(Reservacion reservacion);
@@ -34,6 +35,11 @@ class ReservacionDomainImpl extends ReservacionDomain {
   @override
   List<Reservacion> getReservasFechas(DateTime date) {
     return repository.getReservasFechas(date);
+  }
+
+  @override
+  Future<dynamic> getProbabilidadLluvia(DateTime date) {
+    return repository.getProbabilidadLluvia(date);
   }
 
   @override
