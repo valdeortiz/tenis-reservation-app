@@ -24,12 +24,12 @@ class Reservacion extends HiveObject {
   @HiveField(4)
   final Cancha cancha;
 
-  static Reservacion fromJson(Map<String, dynamic> json) => Reservacion(
+  factory Reservacion.fromJson(Map<String, dynamic> json) => Reservacion(
         id: json["id"],
         fecha: json["fecha"],
-        nombreUsuario: json["usuario"],
-        porcentajeLluvia: json["porcentajeLluvia"],
-        cancha: json['cancha'],
+        nombreUsuario: json["nombreUsuario"],
+        porcentajeLluvia: json["porcentajeLluvia"] as double,
+        cancha: Cancha.fromJson(json['cancha']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +37,6 @@ class Reservacion extends HiveObject {
         "fecha": fecha,
         "nombreUsuario": nombreUsuario,
         "porcentajeLluvia": porcentajeLluvia,
-        "cancha": cancha,
+        "cancha": cancha.toJson(),
       };
 }

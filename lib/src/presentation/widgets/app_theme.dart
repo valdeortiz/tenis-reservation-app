@@ -27,7 +27,7 @@ mixin AppTheme {
       error: Colors.red,
       // secondaryVariant: Palette.primary,
       background: Palette.background,
-      onSurface: Colors.white,
+      onSurface: Colors.black,
       primary: Palette.primary,
     ),
 

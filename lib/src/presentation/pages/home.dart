@@ -10,8 +10,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final prov = Provider.of<ReservacionProvider>(context, listen: false)
-    //   ..getReservaciones();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -25,6 +23,7 @@ class Home extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           onPressed: () =>
               Navigator.of(context).pushNamed(NuevaReservacion.path),
+          tooltip: "Nuevo agendamiento",
           child: const Icon(Icons.add_rounded)),
       body: Column(
         children: [

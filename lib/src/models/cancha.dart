@@ -23,6 +23,19 @@ class Cancha extends ObjectDatabase {
   String toString() {
     return '$titulo - $nombre';
   }
+
+  factory Cancha.fromJson(Map<String, dynamic> json) => Cancha(
+        titulo: json["titulo"],
+        dimensiones: json["dimensiones"],
+        imagen: json["imagen"],
+        nombre: json["nombre"],
+      );
+  Map<String, dynamic> toJson() => {
+        "titulo": titulo,
+        "dimensiones": dimensiones,
+        "imagen": imagen,
+        "nombre": nombre,
+      };
 }
 
 abstract class ObjectDatabase {}
